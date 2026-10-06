@@ -1,0 +1,7 @@
+# Ignore Python files so Vercel doesn't treat them as serverless functions
+*.py
+radar/
+requirements.txt
+test_engine.py
+radar.db
+.github/
