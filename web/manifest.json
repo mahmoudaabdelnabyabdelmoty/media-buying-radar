@@ -1,0 +1,53 @@
+{
+  "name": "رادار الميديا باير | Media Buying Radar",
+  "short_name": "رادار الإعلانات",
+  "description": "لوحة المراقبة اللحظية لتحديثات خوارزميات وسياسات وأعطال منصات الإعلانات الممولة (Meta, Google, TikTok, Snapchat, LinkedIn, X)",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0a0e17",
+  "theme_color": "#0a0e17",
+  "dir": "rtl",
+  "lang": "ar",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/radar-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "أعطال المنصات الحالية",
+      "short_name": "الأعطال",
+      "url": "./index.html?filter=outage",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "تحديثات Meta Ads",
+      "short_name": "Meta",
+      "url": "./index.html?platform=meta",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "تحديثات Google Ads",
+      "short_name": "Google",
+      "url": "./index.html?platform=google",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"]
+}

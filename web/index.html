@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>رادار الميديا باير | Media Buying Radar</title>
+  <meta name="description" content="لوحة المراقبة اللحظية لتحديثات خوارزميات وسياسات وأعطال منصات الإعلانات الممولة (Meta, Google, TikTok, Snapchat, LinkedIn, X)">
+  
+  <!-- PWA & Mobile Meta Tags -->
+  <meta name="theme-color" content="#0a0e17">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="رادار الإعلانات">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Google Fonts: Cairo & Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        
+        <!-- Brand Title & Radar Logo -->
+        <div class="brand-section">
+          <div class="radar-logo-wrap">
+            <img src="icons/radar-icon.svg" alt="Radar Logo" class="radar-logo-svg">
+          </div>
+          <div class="brand-titles">
+            <h1>
+              <span>رادار الميديا باير</span>
+              <span style="font-size: 0.78rem; opacity: 0.6; font-weight: 500; letter-spacing: 0;">AD RADAR</span>
+            </h1>
+            <p>الرصد اللحظي لتحديثات وسياسات وأعطال منصات الإعلانات الممولة</p>
+          </div>
+        </div>
+
+        <!-- Header Actions & Live Status -->
+        <div class="header-actions">
+          <div class="live-status-pill" title="نظام الرصد التلقائي نشط">
+            <span class="pulse-dot"></span>
+            <span>رصد نشط 24/7</span>
+          </div>
+
+          <div class="last-check-text" id="lastCheckIndicator">
+            <i class="fa-regular fa-clock"></i>
+            <span>آخر فحص: منذ لحظات</span>
+          </div>
+
+          <button id="refreshBtn" class="btn-action" title="تحديث البيانات">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>تحديث</span>
+          </button>
+
+          <button id="installAppBtn" class="btn-action" style="display: none;" title="تثبيت التطبيق على جهازك">
+            <i class="fa-solid fa-download"></i>
+            <span>تثبيت التطبيق</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- Active Outage Alert Banner -->
+    <section id="outageBanner" class="outage-banner hidden" role="alert">
+      <div class="outage-content">
+        <div class="outage-icon-wrap">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="outage-details">
+          <h3 id="outageBannerTitle">تنبيه طارئ: عطل فني تم رصده في منصات الإعلانات</h3>
+          <p id="outageBannerDesc">هناك أعطال تؤثر على تقارير الصرف أو التتبع حالياً، احذر تعديل الميزانيات أو الاعتماد على النتائج اللحظية.</p>
+        </div>
+      </div>
+      <button id="filterOutageBtn" class="btn-outage-filter">
+        <i class="fa-solid fa-bullseye"></i> عرض الأعطال النشطة
+      </button>
+    </section>
+
+    <!-- Quick Stats Bar -->
+    <section class="stats-grid" aria-label="شريط الإحصائيات السريعة">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">إجمالي التحديثات</span>
+          <span class="stat-value" id="statTotalUpdates">0</span>
+        </div>
+      </div>
+
+      <div class="stat-card today">
+        <div class="stat-icon">
+          <i class="fa-solid fa-calendar-day"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">تحديثات اليوم</span>
+          <span class="stat-value" id="statTodayUpdates">0</span>
+        </div>
+      </div>
+
+      <div class="stat-card outages">
+        <div class="stat-icon">
+          <i class="fa-solid fa-shield-virus"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">أعطال نشطة</span>
+          <span class="stat-value" id="statActiveOutages">0</span>
+        </div>
+      </div>
+
+      <div class="stat-card top-platform">
+        <div class="stat-icon">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">المنصة الأكثر نشاطاً</span>
+          <span class="stat-value" id="statTopPlatform" style="font-size: 1.25rem;">-</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform Navigation Tabs -->
+    <nav class="platform-tabs-wrapper" aria-label="تصفح المنصات">
+      <div class="platform-tabs" id="platformTabs">
+        <button class="tab-btn active" data-platform="all">
+          <i class="fa-solid fa-globe"></i>
+          <span>الكل</span>
+          <span class="tab-count" id="count-all">0</span>
+        </button>
+
+        <button class="tab-btn" data-platform="meta">
+          <i class="fa-brands fa-meta"></i>
+          <span>Meta Ads</span>
+          <span class="tab-count" id="count-meta">0</span>
+        </button>
+
+        <button class="tab-btn" data-platform="google">
+          <i class="fa-brands fa-google"></i>
+          <span>Google Ads</span>
+          <span class="tab-count" id="count-google">0</span>
+        </button>
+
+        <button class="tab-btn" data-platform="tiktok">
+          <i class="fa-brands fa-tiktok"></i>
+          <span>TikTok Ads</span>
+          <span class="tab-count" id="count-tiktok">0</span>
+        </button>
+
+        <button class="tab-btn" data-platform="snapchat">
+          <i class="fa-brands fa-snapchat"></i>
+          <span>Snapchat Ads</span>
+          <span class="tab-count" id="count-snapchat">0</span>
+        </button>
+
+        <button class="tab-btn" data-platform="linkedin">
+          <i class="fa-brands fa-linkedin"></i>
+          <span>LinkedIn Ads</span>
+          <span class="tab-count" id="count-linkedin">0</span>
+        </button>
+
+        <button class="tab-btn" data-platform="x">
+          <i class="fa-brands fa-x-twitter"></i>
+          <span>X (Twitter) Ads</span>
+          <span class="tab-count" id="count-x">0</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Search & Category Filters Toolbar -->
+    <section class="controls-toolbar" aria-label="أدوات البحث والفلترة">
+      
+      <!-- Top Search & Sort Row -->
+      <div class="search-row">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" class="search-input" placeholder="ابحث في العناوين، الزبدة بالمصري، أو أثر التحديث..." autocomplete="off">
+          <button id="clearSearchBtn" class="search-clear-btn" title="مسح البحث">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="sort-select-wrap">
+          <select id="sortSelect" class="sort-select" aria-label="ترتيب التحديثات">
+            <option value="newest">🕒 الأحدث أولاً</option>
+            <option value="outages-first">🚨 الأعطال والتحذيرات أولاً</option>
+            <option value="oldest">⏳ الأقدم أولاً</option>
+          </select>
+          <i class="fa-solid fa-chevron-down sort-arrow"></i>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-filter-row" id="categoryFilters">
+        <span class="category-filter-label"><i class="fa-solid fa-filter"></i> نوع التحديث:</span>
+        <button class="cat-pill active" data-category="all">الكل</button>
+        <button class="cat-pill" data-category="feature">🚀 ميزة جديدة</button>
+        <button class="cat-pill" data-category="policy">⚠️ سياسات وحظر</button>
+        <button class="cat-pill" data-category="outage">🚨 عطل فني</button>
+        <button class="cat-pill" data-category="algorithm">⚡ تعديل خوارزمي</button>
+      </div>
+
+    </section>
+
+    <!-- Updates Cards Grid -->
+    <section class="cards-grid" id="cardsGrid" aria-label="قائمة التحديثات المرصودة" aria-live="polite">
+      <!-- Injected via JavaScript -->
+    </section>
+
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="icons/radar-icon.svg" alt="Radar Mini">
+          <span>رادار الميديا باير &bull; Media Buying Radar</span>
+        </div>
+        <div class="footer-info">
+          نظام رصد مؤتمت 100% يعمل تلقائياً كل ساعة عبر <span class="highlight">GitHub Actions</span> وبدون أي خوادم مدفوعة.
+        </div>
+        <div class="footer-badges">
+          <span class="badge-tag"><i class="fa-solid fa-bolt"></i> Serverless</span>
+          <span class="badge-tag"><i class="fa-solid fa-mobile-screen"></i> PWA Ready</span>
+          <span class="badge-tag"><i class="fa-solid fa-code"></i> Vanilla High-Perf</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
