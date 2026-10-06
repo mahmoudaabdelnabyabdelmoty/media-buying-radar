@@ -2,7 +2,9 @@ name: Media Buying Radar Engine
 
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    # تشغيل مرتين يومياً (حوالي 11:00-12:00 ظهراً و 8:00-9:00 مساءً بتوقيت مصر)
+    # 09:00 UTC و 18:00 UTC لحفظ كريديت GitHub Actions و LLM Quotas
+    - cron: '0 9,18 * * *'
   workflow_dispatch:
 
 permissions:
