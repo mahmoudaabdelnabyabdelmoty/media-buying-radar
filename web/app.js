@@ -357,6 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
   initPwaInstall();
   startRelativeTimeTicker();
+  startScanCountdownTicker();
 });
 
 // Parse initial URL query parameters
@@ -934,6 +935,103 @@ function updateLastCheckedIndicator() {
 
 function startRelativeTimeTicker() {
   setInterval(updateLastCheckedIndicator, 60000);
+}
+
+// ==========================================================================
+// Cloud Scan Schedule & Live Countdown Engine
+// ==========================================================================
+
+/**
+ * Calculates the next scheduled cloud scan time.
+ * Daily Cron Schedule: 12:00 PM and 8:00 PM Egypt Time (09:00 & 18:00 UTC).
+ */
+function getNextScanSchedule() {
+  const now = new Date();
+  const nowMs = now.getTime();
+
+  // Scheduled UTC scan targets: 09:00 UTC and 18:00 UTC
+  const scan1Today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 9, 0, 0, 0));
+  const scan2Today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 18, 0, 0, 0));
+  const scan1Tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 9, 0, 0, 0));
+
+  // Active scan execution window: 5 minutes after trigger
+  const SCAN_ACTIVE_WINDOW_MS = 5 * 60 * 1000;
+
+  if (nowMs >= scan1Today.getTime() && nowMs < scan1Today.getTime() + SCAN_ACTIVE_WINDOW_MS) {
+    return { targetDate: scan1Today, label: '(12:00 م)', isScanning: true };
+  }
+  if (nowMs >= scan2Today.getTime() && nowMs < scan2Today.getTime() + SCAN_ACTIVE_WINDOW_MS) {
+    return { targetDate: scan2Today, label: '(8:00 م)', isScanning: true };
+  }
+
+  if (nowMs < scan1Today.getTime()) {
+    return { targetDate: scan1Today, label: '(12:00 م)', isScanning: false };
+  } else if (nowMs < scan2Today.getTime()) {
+    return { targetDate: scan2Today, label: '(8:00 م)', isScanning: false };
+  } else {
+    return { targetDate: scan1Tomorrow, label: '(12:00 م)', isScanning: false };
+  }
+}
+
+/**
+ * Updates the countdown pill DOM elements every second
+ */
+function updateScanCountdown() {
+  const countdownEl = document.getElementById('nextScanCountdown');
+  const valueEl = document.getElementById('countdownValue');
+  const targetEl = document.getElementById('countdownTargetTime');
+  const labelEl = countdownEl ? countdownEl.querySelector('.countdown-label') : null;
+
+  if (!valueEl) return;
+
+  const schedule = getNextScanSchedule();
+
+  if (schedule.isScanning) {
+    if (countdownEl) countdownEl.classList.add('is-scanning');
+    if (labelEl) labelEl.style.display = 'none';
+    valueEl.textContent = '📡 جاري الرصد السحابي الآن...';
+    if (targetEl) targetEl.textContent = '';
+    return;
+  }
+
+  if (countdownEl) countdownEl.classList.remove('is-scanning');
+  if (labelEl) labelEl.style.display = '';
+
+  const nowMs = Date.now();
+  const diffMs = Math.max(0, schedule.targetDate.getTime() - nowMs);
+
+  if (diffMs <= 0) {
+    if (countdownEl) countdownEl.classList.add('is-scanning');
+    if (labelEl) labelEl.style.display = 'none';
+    valueEl.textContent = '📡 جاري الرصد السحابي الآن...';
+    if (targetEl) targetEl.textContent = '';
+    return;
+  }
+
+  const totalSeconds = Math.floor(diffMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const formattedHours = String(hours).padStart(2, '0');
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(seconds).padStart(2, '0');
+
+  valueEl.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  if (targetEl) {
+    targetEl.textContent = schedule.label;
+  }
+}
+
+let scanCountdownInterval = null;
+
+/**
+ * Initializes and starts the countdown ticker
+ */
+function startScanCountdownTicker() {
+  updateScanCountdown();
+  if (scanCountdownInterval) clearInterval(scanCountdownInterval);
+  scanCountdownInterval = setInterval(updateScanCountdown, 1000);
 }
 
 // Service Worker Registration

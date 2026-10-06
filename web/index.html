@@ -49,9 +49,16 @@
 
         <!-- Header Actions & Live Status -->
         <div class="header-actions">
-          <div class="live-status-pill" title="نظام الرصد التلقائي نشط">
+          <div class="live-status-pill" id="scanSchedulePill" title="رصد آلي مجدول مرتين يومياً (12:00 ظهراً و 8:00 مساءً بتوقيت مصر)">
             <span class="pulse-dot"></span>
-            <span>رصد نشط 24/7</span>
+            <span>رصد مجدول (مرتين يومياً)</span>
+          </div>
+
+          <div class="countdown-pill" id="nextScanCountdown" title="العد التنازلي لموعد الرصد السحابي القادم">
+            <i class="fa-solid fa-hourglass-half"></i>
+            <span class="countdown-label">الرصد القادم:</span>
+            <span class="countdown-digits" id="countdownValue">--:--:--</span>
+            <span class="countdown-target" id="countdownTargetTime"></span>
           </div>
 
           <div class="last-check-text" id="lastCheckIndicator">
@@ -237,7 +244,7 @@
           <span>رادار الميديا باير &bull; Media Buying Radar</span>
         </div>
         <div class="footer-info">
-          نظام رصد مؤتمت 100% يعمل تلقائياً كل ساعة عبر <span class="highlight">GitHub Actions</span> وبدون أي خوادم مدفوعة.
+          نظام رصد مؤتمت 100% يعمل تلقائياً مرتين يومياً عبر <span class="highlight">GitHub Actions</span> وبدون أي خوادم مدفوعة.
         </div>
         <div class="footer-badges">
           <span class="badge-tag"><i class="fa-solid fa-bolt"></i> Serverless</span>
