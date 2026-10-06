@@ -1,0 +1,52 @@
+name: Media Buying Radar Engine
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  radar-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Radar Engine
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          python radar/main.py
+
+      - name: Commit and push if updates.json changed
+        run: |
+          git config --local user.email "radar-bot@users.noreply.github.com"
+          git config --local user.name "Media Buying Radar Bot"
+          if git status --porcelain | grep -q 'web/data/updates.json'; then
+            echo "Changes detected in web/data/updates.json. Committing..."
+            git add web/data/updates.json
+            if [ -f "radar.db" ]; then
+              git add radar.db || true
+            fi
+            git commit -m "chore(radar): auto-update ads platform feeds [skip ci] [$(date -u +'%Y-%m-%d %H:%M UTC')]"
+            git push
+          else
+            echo "No new updates detected in this run cycle."
+          fi
