@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "generated_at": "2026-10-06T13:44:05.158509+00:00",
-    "total_updates": 57,
+    "generated_at": "2026-10-06T14:05:46.704763+00:00",
+    "total_updates": 58,
     "total_outages": 3,
     "platform_breakdown": {
-      "community": 15,
+      "community": 16,
       "google_ads": 16,
       "linkedin": 6,
       "meta": 10,
@@ -15,6 +15,28 @@
     "engine_version": "1.0.0"
   },
   "updates": [
+    {
+      "id": 58,
+      "platform": "community",
+      "title": "Reddit r/ppc: Alert and Script ideas",
+      "original_url": "https://www.reddit.com/r/PPC/comments/1wz2o4t/alert_and_script_ideas/",
+      "published_at": "2026-10-06T13:30:49+00:00",
+      "category": "algorithm",
+      "raw_content": "Currently I've been using a spend tracker script to alert me if any accounts go haywire with spend, massively see a drop in LostIS to Budget and a conversion drop but now I'm looking to see if there's anything I'm missing. Does anyone have any scripts or alerts that they use daily/weekly to ensure your account is tracking as it should be? submitted by /u/PastasDangle [link] [comments]",
+      "egyptian_summary": "تحديث في آلية التتبع والـ Conversions في Community: Reddit r/ppc: Alert and Script ideas. المنصة بتحدث طريقة احتساب الأحداث وربط الـ Conversions API أو بروتوكولات الخصوصية.",
+      "media_buyer_impact": "🎯 ادخل فوراً على Events Manager وراجع Event Match Quality وسرعة وصول البيانات. لو مش مفعل الـ CAPI (الربط من السيرفر)، دي إشارة واضحة إنك لازم تفعله عشان متخسرش داتا التحويلات.",
+      "hash_sha256": "75aab4d87a6cf416e7877bf8cb6fd0ae4978d1d3c5e8e5c907fd821ffbd7a240",
+      "is_outage": false,
+      "created_at": "2026-10-06T14:05:46.694571+00:00",
+      "raw_platform": "community",
+      "platformName": "مجتمعات المسوقين",
+      "categoryLabel": "🎯 تتبع وبيكسل",
+      "summary_egyptian": "تحديث في آلية التتبع والـ Conversions في Community: Reddit r/ppc: Alert and Script ideas. المنصة بتحدث طريقة احتساب الأحداث وربط الـ Conversions API أو بروتوكولات الخصوصية.",
+      "buyer_impact": "🎯 ادخل فوراً على Events Manager وراجع Event Match Quality وسرعة وصول البيانات. لو مش مفعل الـ CAPI (الربط من السيرفر)، دي إشارة واضحة إنك لازم تفعله عشان متخسرش داتا التحويلات.",
+      "source_url": "https://www.reddit.com/r/PPC/comments/1wz2o4t/alert_and_script_ideas/",
+      "source_name": "مجتمعات المسوقين",
+      "timestamp": "2026-10-06T13:30:49+00:00"
+    },
     {
       "id": 42,
       "platform": "x",
