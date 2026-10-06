@@ -577,6 +577,12 @@ body::before {
   border-color: var(--color-x);
   box-shadow: 0 0 15px var(--color-x-glow);
 }
+.tab-btn[data-platform="community"].active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #a7f3d0;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+}
 
 /* ==========================================================================
    Filter & Search Toolbar
@@ -819,6 +825,10 @@ body::before {
   --platform-accent: var(--color-x);
   --platform-glow: var(--color-x-glow);
 }
+.radar-card.platform-community {
+  --platform-accent: #10b981;
+  --platform-glow: rgba(16, 185, 129, 0.3);
+}
 
 /* Card Header */
 .card-top-meta {
@@ -876,6 +886,11 @@ body::before {
   border-color: rgba(231, 233, 234, 0.3);
   background: rgba(231, 233, 234, 0.1);
 }
+.platform-community .platform-badge {
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+}
 
 .card-tags {
   display: flex;
@@ -926,59 +941,179 @@ body::before {
   font-size: 1.05rem;
   font-weight: 700;
   color: #ffffff;
-  line-height: 1.45;
-  margin-bottom: 1.1rem;
-  direction: ltr;
-  text-align: left;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  margin-bottom: 1.15rem;
+  text-align: start;
   letter-spacing: -0.01em;
+  word-break: break-word;
 }
 
-/* Section Box 1: Egyptian Summary */
+/* ==========================================================================
+   Section Box 1: Egyptian Summary ("💡 الزبدة بالمصري")
+   Clean typography, warm amber glow, and comfortable reading rhythm
+   ========================================================================== */
 .box-summary-eg {
-  background: linear-gradient(135deg, rgba(255, 183, 3, 0.08) 0%, rgba(255, 133, 0, 0.03) 100%);
-  border: 1px solid rgba(255, 183, 3, 0.22);
+  background: linear-gradient(145deg, rgba(255, 183, 3, 0.08) 0%, rgba(18, 26, 44, 0.65) 100%);
+  border: 1px solid rgba(255, 183, 3, 0.24);
   border-radius: var(--radius-md);
-  padding: 0.95rem 1rem;
-  margin-bottom: 0.85rem;
+  padding: 1.05rem 1.15rem;
+  margin-bottom: 1rem;
   position: relative;
+  transition: var(--transition-smooth);
+}
+
+.box-summary-eg:hover {
+  border-color: rgba(255, 183, 3, 0.38);
+  box-shadow: 0 4px 20px rgba(255, 183, 3, 0.06);
 }
 
 .box-header-title {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 800;
-  color: #fde047;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 0.35rem;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.box-summary-eg p {
-  font-size: 0.92rem;
+.box-header-title-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.box-summary-eg .box-header-title-main {
+  color: #fde047;
+}
+
+.box-header-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  letter-spacing: 0;
+}
+
+.box-summary-eg .box-header-badge {
+  background: rgba(255, 183, 3, 0.14);
+  color: #fef08a;
+  border: 1px solid rgba(255, 183, 3, 0.25);
+}
+
+.box-summary-eg p,
+.box-summary-eg .box-text-content {
+  font-size: 0.93rem;
   color: #f8fafc;
-  line-height: 1.55;
-  font-weight: 600;
+  line-height: 1.68;
+  font-weight: 500;
+  white-space: pre-line;
+  word-break: break-word;
 }
 
-/* Section Box 2: Buyer Impact */
+.box-summary-eg .box-text-content + .box-text-content {
+  margin-top: 0.55rem;
+}
+
+/* ==========================================================================
+   Section Box 2: Buyer Impact ("🎯 الأثر على الميديا باير")
+   Distinctive, high-prominence gradient border & structured bullet styling
+   ========================================================================== */
 .box-buyer-impact {
-  background: linear-gradient(135deg, rgba(0, 245, 212, 0.08) 0%, rgba(0, 180, 216, 0.03) 100%);
-  border: 1px solid rgba(0, 245, 212, 0.22);
+  position: relative;
+  background: linear-gradient(145deg, rgba(13, 22, 38, 0.95) 0%, rgba(10, 16, 28, 0.88) 100%) padding-box,
+              linear-gradient(135deg, rgba(0, 245, 212, 0.55) 0%, rgba(0, 180, 216, 0.3) 50%, rgba(157, 78, 221, 0.45) 100%) border-box;
+  border: 1.5px solid transparent;
   border-radius: var(--radius-md);
-  padding: 0.95rem 1rem;
-  margin-bottom: 1.15rem;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(0, 245, 212, 0.08);
+  transition: var(--transition-smooth);
+}
+
+.box-buyer-impact:hover {
+  background: linear-gradient(145deg, rgba(16, 26, 46, 0.96) 0%, rgba(12, 19, 34, 0.9) 100%) padding-box,
+              linear-gradient(135deg, rgba(0, 245, 212, 0.75) 0%, rgba(0, 180, 216, 0.45) 50%, rgba(157, 78, 221, 0.65) 100%) border-box;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 245, 212, 0.16);
+  transform: translateY(-1px);
 }
 
 .box-buyer-impact .box-header-title {
-  color: #5eead4;
+  border-bottom: 1px solid rgba(0, 245, 212, 0.14);
 }
 
-.box-buyer-impact p {
-  font-size: 0.88rem;
-  color: #e2e8f0;
-  line-height: 1.55;
+.box-buyer-impact .box-header-title-main {
+  color: #2dd4bf;
+  text-shadow: 0 0 12px rgba(45, 212, 191, 0.3);
+}
+
+.box-buyer-impact .box-header-badge {
+  background: rgba(0, 245, 212, 0.12);
+  color: #5eead4;
+  border: 1px solid rgba(0, 245, 212, 0.3);
+}
+
+.box-buyer-impact p,
+.box-buyer-impact .box-text-content {
+  font-size: 0.92rem;
+  color: #f1f5f9;
+  line-height: 1.7;
   font-weight: 500;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+.box-buyer-impact .box-text-content + .box-text-content {
+  margin-top: 0.55rem;
+}
+
+/* Multi-line & Bullet Point Formatting inside Boxes */
+.box-rich-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.35rem;
+}
+
+.rich-bullet-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.68;
+  color: #f1f5f9;
+}
+
+.rich-bullet-row .bullet-marker {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+.rich-bullet-row .bullet-marker.impact-marker {
+  color: var(--accent-cyan);
+}
+
+.rich-bullet-row .bullet-marker.summary-marker {
+  color: #fde047;
+}
+
+.rich-bullet-row .bullet-text {
+  flex: 1;
+  word-break: break-word;
+}
+
+.rich-bullet-row.plain-row {
+  padding-right: 0.25rem;
 }
 
 /* Card Actions Footer */
