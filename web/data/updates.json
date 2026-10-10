@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "generated_at": "2026-10-10T14:57:30.395258+00:00",
-    "total_updates": 111,
+    "generated_at": "2026-10-10T20:59:02.798383+00:00",
+    "total_updates": 112,
     "total_outages": 0,
     "platform_breakdown": {
-      "community": 64,
+      "community": 65,
       "google_ads": 17,
       "linkedin": 6,
       "meta": 14,
@@ -15,6 +15,28 @@
     "engine_version": "1.0.0"
   },
   "updates": [
+    {
+      "id": 112,
+      "platform": "community",
+      "title": "Reddit r/ppc: When and how to use tRoas on PMAX in Google Ads?",
+      "original_url": "https://www.reddit.com/r/PPC/comments/1x2n267/when_and_how_to_use_troas_on_pmax_in_google_ads/",
+      "published_at": "2026-10-10T18:57:11+00:00",
+      "category": "feature",
+      "raw_content": "submitted by /u/xy00py420 [link] [comments]",
+      "egyptian_summary": "💡 استشارة ونقاش عملي من مجتمع الميديا بايرز على Reddit: When and how to use tRoas on PMAX in Google Ads?.\nالموضوع بيتناول تحديات واقعية في إدارة الحملات الإعلانية وطرق تعامل المسوقين معها عملياً في بيئة العمل الحقيقية.",
+      "media_buyer_impact": "1. 🔍 استفد من تجارب المسوقين الآخرين في تفادي أخطاء ضبط الميزانيات أو التتبع.\n2. 🧪 اختبر الفرضيات المطروحة على نطاق ضيق في حسابك قبل اعتمادها كاستراتيجية دائمة.\n3. 📈 قارن نتائج حملاتك بالمعدلات المعيارية (Industry Benchmarks) لمجالك.",
+      "hash_sha256": "9ccf5c5739dc2c4357c522cc5f4be4630583e2fc09150d9b109eb35ac01c3fb6",
+      "is_outage": false,
+      "created_at": "2026-10-10T20:59:02.789878+00:00",
+      "raw_platform": "community",
+      "platformName": "مجتمعات المسوقين",
+      "categoryLabel": "💬 تجارب الميديا بايرز",
+      "summary_egyptian": "💡 استشارة ونقاش عملي من مجتمع الميديا بايرز على Reddit: When and how to use tRoas on PMAX in Google Ads?.\nالموضوع بيتناول تحديات واقعية في إدارة الحملات الإعلانية وطرق تعامل المسوقين معها عملياً في بيئة العمل الحقيقية.",
+      "buyer_impact": "1. 🔍 استفد من تجارب المسوقين الآخرين في تفادي أخطاء ضبط الميزانيات أو التتبع.\n2. 🧪 اختبر الفرضيات المطروحة على نطاق ضيق في حسابك قبل اعتمادها كاستراتيجية دائمة.\n3. 📈 قارن نتائج حملاتك بالمعدلات المعيارية (Industry Benchmarks) لمجالك.",
+      "source_url": "https://www.reddit.com/r/PPC/comments/1x2n267/when_and_how_to_use_troas_on_pmax_in_google_ads/",
+      "source_name": "مجتمعات المسوقين",
+      "timestamp": "2026-10-10T18:57:11+00:00"
+    },
     {
       "id": 107,
       "platform": "community",
