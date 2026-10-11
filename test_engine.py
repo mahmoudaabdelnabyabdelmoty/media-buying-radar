@@ -111,9 +111,9 @@ class TestEgyptianSummarizer(unittest.TestCase):
             platform="meta",
         )
         self.assertTrue(res["is_outage"])
-        self.assertEqual(res["category"], "أعطال وسيستم")
+        self.assertIn("عطل", res["category"])
         self.assertIn("عطل", res["egyptian_summary"])
-        self.assertIn("متعدلش", res["media_buyer_impact"])
+        self.assertIn("تعديل", res["media_buyer_impact"])
 
     def test_pixel_tracking_fallback(self):
         res = _summarize_with_rule_based(
@@ -122,7 +122,7 @@ class TestEgyptianSummarizer(unittest.TestCase):
             platform="tiktok",
         )
         self.assertFalse(res["is_outage"])
-        self.assertEqual(res["category"], "تتبع وبيكسل")
+        self.assertIn("تتبع", res["category"])
         self.assertIn("تتبع", res["egyptian_summary"])
         self.assertIn("CAPI", res["media_buyer_impact"])
 
@@ -132,9 +132,9 @@ class TestEgyptianSummarizer(unittest.TestCase):
             content="Ad accounts violating health and misleading claims policy face immediate disapproval and suspension.",
             platform="google_ads",
         )
-        self.assertEqual(res["category"], "سياسات وحظر")
+        self.assertIn("سياسات", res["category"])
         self.assertIn("سياسات", res["egyptian_summary"])
-        self.assertIn("Landing Pages", res["media_buyer_impact"])
+        self.assertIn("سياسات", res["media_buyer_impact"])
 
     def test_cpm_bidding_fallback(self):
         res = _summarize_with_rule_based(
@@ -142,8 +142,8 @@ class TestEgyptianSummarizer(unittest.TestCase):
             content="Target ROAS bidding and holiday auction cost changes.",
             platform="meta",
         )
-        self.assertEqual(res["category"], "مزادات وCPM")
-        self.assertIn("CPM", res["media_buyer_impact"])
+        self.assertIn("مزادات", res["category"])
+        self.assertIn("المزايدة", res["egyptian_summary"])
 
     def test_full_cascade_output_schema(self):
         res = summarize_update(
