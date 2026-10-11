@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "generated_at": "2026-10-11T15:14:25.179869+00:00",
-    "total_updates": 112,
+    "generated_at": "2026-10-11T21:20:21.355100+00:00",
+    "total_updates": 113,
     "total_outages": 4,
     "platform_breakdown": {
-      "community": 65,
+      "community": 66,
       "google_ads": 17,
       "linkedin": 6,
       "meta": 14,
@@ -15,6 +15,28 @@
     "engine_version": "1.0.0"
   },
   "updates": [
+    {
+      "id": 113,
+      "platform": "community",
+      "title": "Reddit r/ppc: 4 shops, 1km catchment. Split the campaign by shop or keep it broad?",
+      "original_url": "https://www.reddit.com/r/PPC/comments/1x3fnt0/4_shops_1km_catchment_split_the_campaign_by_shop/",
+      "published_at": "2026-10-11T18:30:50+00:00",
+      "category": "feature",
+      "raw_content": "I sell something people only buy if they live within about 1 km of the shop. Walking distance product, no delivery, no online version. 4 shops, all in the same city. I’ve been running fully broad, no shop-level targeting at all, and my cost per sale is around 3$. Now I want to push 3-4 different marketing angles, and I’m planning to film 3 videos per shop, on location, each with a different angle. Structures I’m weighing: A. One campaign, one ad set, all 12 videos, broad. Let Meta sort it out. B. One campaign, 4 ad sets, one per shop, 1 km radius on each. C. 4 separate campaigns, one per shop, 1 km radius. D. Split by angle instead of by shop. What I’d like to know: Which would you run and why? If I can only split one way, by shop or by angle? Does a 1 km radius starve the learning phase badly enough that B and C are dead on arrival? Straight answer wanted: is my broad number likely to get better or worse once I split? I keep assuming tighter geo helps. Nobody has actually told me it d",
+      "egyptian_summary": "🎬 زوايا إعلانية وصناعة محتوى في مجتمع الميديا بايرز والـ PPC: 4 shops, 1km catchment. Split the campaign by shop or keep it broad?.\nتحليل لأهم عناصر الخطاف البصري (Hook) وتصميم الإعلانات لجذب انتباه الجمهور ورفع معدلات النقر وتخفيض تكلفة الوصول.",
+      "media_buyer_impact": "1. 👁️ ركز على أول ثانيتين في الفيديو (Thumbstop Rate)؛ جذب انتباه العميل فوراً لموضوع (4 shops, 1km catchment. Split ) هو مفتاح خفض الـ CPM.\n2. 📐 صمم كريفات الفيديو بنسب طولية (9:16) بأسلوب Native UGC طبيعي وتجنب الإعلانات الرسمية المعقدة.\n3. 🔄 جدد الكريفات كل 7 إلى 10 أيام لاختبار زوايا تسويقية جديدة ومكافحة تشبع الجمهور وإرهاق الإعلانات.",
+      "hash_sha256": "422010d2503292dd9792cb8c09f356d98f93cb56bfd9373644b7306e688b3aaf",
+      "is_outage": false,
+      "created_at": "2026-10-11T21:20:21.339694+00:00",
+      "raw_platform": "community",
+      "platformName": "مجتمعات المسوقين",
+      "categoryLabel": "🎬 محتوى وتريندات",
+      "summary_egyptian": "🎬 زوايا إعلانية وصناعة محتوى في مجتمع الميديا بايرز والـ PPC: 4 shops, 1km catchment. Split the campaign by shop or keep it broad?.\nتحليل لأهم عناصر الخطاف البصري (Hook) وتصميم الإعلانات لجذب انتباه الجمهور ورفع معدلات النقر وتخفيض تكلفة الوصول.",
+      "buyer_impact": "1. 👁️ ركز على أول ثانيتين في الفيديو (Thumbstop Rate)؛ جذب انتباه العميل فوراً لموضوع (4 shops, 1km catchment. Split ) هو مفتاح خفض الـ CPM.\n2. 📐 صمم كريفات الفيديو بنسب طولية (9:16) بأسلوب Native UGC طبيعي وتجنب الإعلانات الرسمية المعقدة.\n3. 🔄 جدد الكريفات كل 7 إلى 10 أيام لاختبار زوايا تسويقية جديدة ومكافحة تشبع الجمهور وإرهاق الإعلانات.",
+      "source_url": "https://www.reddit.com/r/PPC/comments/1x3fnt0/4_shops_1km_catchment_split_the_campaign_by_shop/",
+      "source_name": "مجتمعات المسوقين",
+      "timestamp": "2026-10-11T18:30:50+00:00"
+    },
     {
       "id": 112,
       "platform": "community",
