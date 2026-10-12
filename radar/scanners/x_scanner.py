@@ -31,6 +31,8 @@ def scan_x_developer_changelog() -> List[Dict[str, Any]]:
                     desc = next_el.get_text().strip() if next_el else "X Developer Platform update notice"
                     updates.append({
                         "platform": "x_ads",
+                        "inferred_platform": "x_ads",
+                        "source_name": "X Developer Changelog",
                         "title": f"X Developer: {title_text[:100]}",
                         "original_url": url,
                         "published_at": datetime.now(timezone.utc).isoformat(),
@@ -46,20 +48,28 @@ def scan_x_developer_changelog() -> List[Dict[str, Any]]:
 def scan_x_blog() -> List[Dict[str, Any]]:
     """Scans X product blog RSS feed."""
     updates = []
-    feed_url = "https://blog.x.com/en_us/topics/product/rss"
-    entries = fetch_rss_feed(feed_url)
-    for entry in entries[:8]:
-        text = f"{entry['title']} {entry['raw_content']}".lower()
-        if any(k in text for k in ["ad", "revenue", "creator", "monetization", "targeting", "analytics", "business"]):
-            updates.append({
-                "platform": "x_ads",
-                "title": f"X Ads: {entry['title']}",
-                "original_url": entry["original_url"],
-                "published_at": entry["published_at"],
-                "category": "ميزات جديدة",
-                "raw_content": entry["raw_content"],
-                "is_outage": False,
-            })
+    feed_urls = [
+        "https://blog.x.com/en_us/topics/product/rss",
+        "https://blog.twitter.com/en_us/topics/product/rss",
+    ]
+    for feed_url in feed_urls:
+        entries = fetch_rss_feed(feed_url)
+        for entry in entries[:8]:
+            text = f"{entry['title']} {entry['raw_content']}".lower()
+            if any(k in text for k in ["ad", "revenue", "creator", "monetization", "targeting", "analytics", "business"]):
+                updates.append({
+                    "platform": "x_ads",
+                    "inferred_platform": "x_ads",
+                    "source_name": "X Blog",
+                    "title": f"X Ads: {entry['title']}",
+                    "original_url": entry["original_url"],
+                    "published_at": entry["published_at"],
+                    "category": "ميزات جديدة",
+                    "raw_content": entry["raw_content"],
+                    "is_outage": False,
+                })
+        if updates:
+            break
     return updates
 
 

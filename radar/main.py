@@ -1,11 +1,12 @@
 """
 Main Radar Engine Runner.
 Orchestrates:
-1. Running all platform scanners
-2. Deduplication check via SHA-256
-3. Summarization cascade (Gemini -> Groq -> Smart Egyptian Rule-Based)
-4. SQLite persistence (radar.db)
-5. Exporting clean JSON for web dashboard (web/data/updates.json)
+1. Intelligent Platform Router auditing existing records & newly scanned items
+2. Running all platform scanners
+3. Deduplication check via SHA-256
+4. Summarization cascade (Gemini -> Groq -> Smart Egyptian Rule-Based)
+5. SQLite persistence (radar.db)
+6. Exporting clean JSON for web dashboard (web/data/updates.json)
 """
 
 import os
@@ -30,6 +31,7 @@ from radar.database import (
     get_stats,
 )
 from radar.llm_summarizer import summarize_update
+from radar.platform_router import route_platform, reroute_database_records
 from radar.scanners import ALL_SCANNERS
 
 # Configure Logging
@@ -56,8 +58,12 @@ def run_radar_cycle(
     logger.info(f"⏰ وقت البدء: {datetime.now(timezone.utc).isoformat()}")
     logger.info("=" * 60)
 
-    # 1. Initialize Database
+    # 1. Initialize Database & Audit existing records with Intelligent Platform Router
     init_db(db_path=db_path)
+    if not dry_run:
+        audit_stats = reroute_database_records(db_path=db_path)
+        if audit_stats["re_routed"] > 0:
+            logger.info(f"🧭 تم فحص القاعدة وإعادة توجيه {audit_stats['re_routed']} خبراً عبر الموجه الذكي.")
 
     scanners_to_run = {}
     if target_platform:
@@ -72,10 +78,11 @@ def run_radar_cycle(
     total_scanned = 0
     total_new = 0
     total_skipped = 0
+    total_routed = 0
 
     # 2. Run Scanners
     for platform_key, scanner_func in scanners_to_run.items():
-        logger.info(f"🔍 جاري فحص منصة: [{platform_key}] ...")
+        logger.info(f"🔍 جاري فحص مصادر: [{platform_key}] ...")
         try:
             items = scanner_func()
             logger.info(f"   رصد {len(items)} عنصر من مصادر [{platform_key}].")
@@ -85,7 +92,15 @@ def run_radar_cycle(
                 title = item.get("title", "").strip()
                 url = item.get("original_url", "").strip()
                 raw_content = item.get("raw_content", "")
-                platform = item.get("platform", platform_key)
+                incoming_platform = item.get("platform", platform_key)
+
+                # Intelligent Platform Routing
+                platform = route_platform(title, raw_content, default_platform=incoming_platform)
+                item["platform"] = platform
+                item["inferred_platform"] = item.get("inferred_platform") or platform
+                if platform != incoming_platform:
+                    total_routed += 1
+                    logger.info(f"   🧭 توجيه ذكي: تحويل المنصة من [{incoming_platform}] إلى [{platform}] | {title[:50]}")
 
                 # Deduplication check
                 content_hash = generate_content_hash(platform, title, url)
@@ -93,7 +108,7 @@ def run_radar_cycle(
                     total_skipped += 1
                     continue
 
-                logger.info(f"✨ تحديث جديد تم رصده: [{title[:60]}...]")
+                logger.info(f"✨ تحديث جديد تم رصده [{platform}]: [{title[:60]}...]")
 
                 # Summarize via LLM cascade (Gemini -> Groq -> Smart Rule-based Egyptian)
                 summary_data = summarize_update(title, raw_content, platform)
@@ -110,13 +125,13 @@ def run_radar_cycle(
                     row_id = save_update(item, db_path=db_path)
                     if row_id:
                         total_new += 1
-                        logger.info(f"   💾 تم الحفظ بنجاح (ID: {row_id})")
+                        logger.info(f"   💾 تم الحفظ بنجاح (ID: {row_id} - [{platform}])")
                 else:
                     total_new += 1
                     logger.info("   [Dry Run] تخطي الحفظ الفعلي.")
 
         except Exception as e:
-            logger.error(f"❌ خطأ أثناء فحص المنصة [{platform_key}]: {e}", exc_info=True)
+            logger.error(f"❌ خطأ أثناء فحص المصادر [{platform_key}]: {e}", exc_info=True)
 
     # 3. Export to JSON for frontend dashboard
     json_dest = export_path or EXPORT_JSON_PATH
@@ -133,14 +148,19 @@ def run_radar_cycle(
     logger.info(f"   - إجمالي العناصر المفحوصة: {total_scanned}")
     logger.info(f"   - عناصر جديدة تمت معالجتها وحفظها: {total_new}")
     logger.info(f"   - عناصر متكررة تم تجاهلها: {total_skipped}")
+    logger.info(f"   - عناصر أعيد توجيهها بالذكاء الدلالي: {total_routed}")
     logger.info(f"   - إجمالي التحديثات المخزنة في القاعدة: {stats['total_updates']}")
     logger.info(f"   - الأعطال النشطة المرصودة: {stats['total_outages']}")
+    logger.info("   - توزيع المنصات في القاعدة الآن:")
+    for p_name, count in stats["platforms"].items():
+        logger.info(f"     * {p_name}: {count} تحديث")
     logger.info("=" * 60)
 
     return {
         "scanned": total_scanned,
         "new": total_new,
         "skipped": total_skipped,
+        "routed": total_routed,
         "stats": stats,
         "export_path": json_dest,
     }

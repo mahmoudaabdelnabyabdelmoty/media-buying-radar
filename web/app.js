@@ -346,7 +346,8 @@ const PLATFORM_NAMES_AR = {
   tiktok: 'TikTok Ads',
   snapchat: 'Snapchat Ads',
   linkedin: 'LinkedIn Ads',
-  x: 'X Ads'
+  x: 'X Ads',
+  community: 'مجتمعات المسوقين'
 };
 
 // Application Initialization

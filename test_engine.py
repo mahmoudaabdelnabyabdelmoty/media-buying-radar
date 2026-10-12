@@ -158,6 +158,79 @@ class TestEgyptianSummarizer(unittest.TestCase):
         self.assertIn("source_engine", res)
 
 
+from radar.platform_router import route_platform, route_item, calculate_platform_scores
+
+
+class TestPlatformRouter(unittest.TestCase):
+    def test_tiktok_routing(self):
+        cases = [
+            ("TikTok Shop launches seller subsidies for holiday shopping", "tiktok"),
+            ("How to leverage Spark Ads for influencer amplification", "tiktok"),
+            ("ByteDance updates video compression algorithms", "tiktok"),
+        ]
+        for title, expected in cases:
+            res = route_platform(title, default_platform="community")
+            self.assertEqual(res, expected, f"Failed for {title}")
+
+    def test_meta_routing(self):
+        cases = [
+            ("Advantage+ Shopping Campaigns: 5 optimization tips for Q4", "meta"),
+            ("Meta CAPI deduplication discrepancies between server and browser", "meta"),
+            ("Instagram Reels ads format update", "meta"),
+            ("Facebook Business Manager verification requirements", "meta"),
+            ("Threads opens ad placement beta in selected regions", "meta"),
+        ]
+        for title, expected in cases:
+            res = route_platform(title, default_platform="community")
+            self.assertEqual(res, expected, f"Failed for {title}")
+
+    def test_google_routing(self):
+        cases = [
+            ("Performance Max negative keyword scripts for asset groups", "google_ads"),
+            ("Google Merchant Center feeds error resolution guide", "google_ads"),
+            ("YouTube Demand Gen campaigns scaling strategy", "google_ads"),
+            ("How to set tROAS targets in Search Ads without choking volume", "google_ads"),
+        ]
+        for title, expected in cases:
+            res = route_platform(title, default_platform="community")
+            self.assertEqual(res, expected, f"Failed for {title}")
+
+    def test_snapchat_routing(self):
+        cases = [
+            ("Snapchat Sponsored AR Lenses now available for SMB self-serve", "snapchat"),
+            ("Snap Ads delivery pacing issues across GCC accounts", "snapchat"),
+            ("Spotlight monetization program guidelines", "snapchat"),
+        ]
+        for title, expected in cases:
+            res = route_platform(title, default_platform="community")
+            self.assertEqual(res, expected, f"Failed for {title}")
+
+    def test_linkedin_routing(self):
+        cases = [
+            ("Thought Leader Ads performance benchmarks for B2B tech", "linkedin"),
+            ("InMail response rates dropping: how to fix your audience", "linkedin"),
+            ("Why B2B campaigns built for enterprise buyers keep stalling", "linkedin"),
+        ]
+        for title, expected in cases:
+            res = route_platform(title, default_platform="community")
+            self.assertEqual(res, expected, f"Failed for {title}")
+
+    def test_x_ads_routing(self):
+        cases = [
+            ("X Ads launches new Amplify video sponsorships", "x_ads"),
+            ("Twitter API updates and X Developer Conversion tracking", "x_ads"),
+            ("Grok AI ad placements previewed for premium advertisers", "x_ads"),
+        ]
+        for title, expected in cases:
+            res = route_platform(title, default_platform="community")
+            self.assertEqual(res, expected, f"Failed for {title}")
+
+    def test_community_fallback(self):
+        title = "WordPress 7.1.3 critical security vulnerability patch released"
+        res = route_platform(title, default_platform="community")
+        self.assertEqual(res, "community")
+
+
 class TestScanners(unittest.TestCase):
     def test_scanner_registry(self):
         self.assertIn("meta", ALL_SCANNERS)
@@ -167,9 +240,10 @@ class TestScanners(unittest.TestCase):
         self.assertIn("linkedin", ALL_SCANNERS)
         self.assertIn("x_ads", ALL_SCANNERS)
         self.assertIn("community", ALL_SCANNERS)
+        self.assertIn("industry_media", ALL_SCANNERS)
 
     def test_scanner_run(self):
-        """Runs scanners safely and validates return types."""
+        """Runs scanners safely and validates return types and inferred_platform."""
         for name, scanner_fn in ALL_SCANNERS.items():
             try:
                 items = scanner_fn()
@@ -179,6 +253,8 @@ class TestScanners(unittest.TestCase):
                     first = items[0]
                     self.assertIn("title", first)
                     self.assertIn("original_url", first)
+                    if "inferred_platform" in first:
+                        self.assertIsNotNone(first["inferred_platform"])
             except Exception as e:
                 print(f"Notice: Network/source warning on [{name}]: {e}")
 

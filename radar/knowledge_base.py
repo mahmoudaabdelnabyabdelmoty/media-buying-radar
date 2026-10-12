@@ -829,7 +829,7 @@ def dynamic_semantic_analyzer(platform: str, title: str, raw_content: str = "") 
 
     # Clean display title by stripping source prefixes
     clean_title = re.sub(
-        r"^(Reddit r/ppc:\s*|Search Engine Journal:\s*|PPC Hero:\s*|Meta:\s*|Google Ads Dev:\s*|Google Ads:\s*|Snapchat.*?\s*|LinkedIn.*?\s*|TikTok.*?\s*|X Developer:\s*)",
+        r"^(Reddit r/ppc:\s*|Search Engine Journal:\s*|PPC Hero:\s*|Meta:\s*|Google Ads Dev:\s*|Google Ads:\s*|Snapchat.*?\s*|LinkedIn.*?\s*|TikTok.*?\s*|X Developer:\s*|X:\s*|Social Media Today:\s*|MarTech:\s*|Search Engine Roundtable:\s*|Digiday:\s*|TechCrunch.*?\s*)",
         "",
         title,
         flags=re.IGNORECASE,

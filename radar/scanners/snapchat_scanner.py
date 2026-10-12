@@ -2,6 +2,7 @@
 Snapchat Ads Scanner.
 Scans:
 - Snap Newsroom RSS Feed
+- Snapchat For Business Blog
 - Snapchat Marketing API Changelog / Developer Releases
 """
 
@@ -18,20 +19,28 @@ logger = logging.getLogger("radar.scanners.snapchat")
 def scan_snap_newsroom() -> List[Dict[str, Any]]:
     """Scans Snap Newsroom and For Business Blog for advertising updates."""
     updates = []
-    feed_url = "https://newsroom.snap.com/rss"
-    entries = fetch_rss_feed(feed_url)
-    for entry in entries[:8]:
-        text = f"{entry['title']} {entry['raw_content']}".lower()
-        if any(k in text for k in ["ad", "business", "partner", "sponsor", "lens", "ar", "brand", "commerce", "monetization"]):
-            updates.append({
-                "platform": "snapchat",
-                "title": f"Snapchat: {entry['title']}",
-                "original_url": entry["original_url"],
-                "published_at": entry["published_at"],
-                "category": "ميزات جديدة",
-                "raw_content": entry["raw_content"],
-                "is_outage": False,
-            })
+    feed_urls = [
+        "https://newsroom.snap.com/rss",
+        "https://newsroom.snap.com/en-US/rss",
+    ]
+    for feed_url in feed_urls:
+        entries = fetch_rss_feed(feed_url)
+        for entry in entries[:8]:
+            text = f"{entry['title']} {entry['raw_content']}".lower()
+            if any(k in text for k in ["ad", "business", "partner", "sponsor", "lens", "ar", "brand", "commerce", "monetization"]):
+                updates.append({
+                    "platform": "snapchat",
+                    "inferred_platform": "snapchat",
+                    "source_name": "Snap Newsroom",
+                    "title": f"Snapchat: {entry['title']}",
+                    "original_url": entry["original_url"],
+                    "published_at": entry["published_at"],
+                    "category": "ميزات جديدة",
+                    "raw_content": entry["raw_content"],
+                    "is_outage": False,
+                })
+        if updates:
+            break
 
     # If feed is empty or blocked, check Snapchat for Business blog
     if not updates:
@@ -39,12 +48,14 @@ def scan_snap_newsroom() -> List[Dict[str, Any]]:
         if resp:
             try:
                 soup = BeautifulSoup(resp.text, "html.parser")
-                cards = soup.find_all(["h2", "h3", "a"], limit=20)
+                cards = soup.find_all(["h2", "h3", "a"], limit=25)
                 for c in cards:
                     text = c.get_text().strip()
-                    if len(text) > 25 and any(k in text.lower() for k in ["ad", "business", "audience", "campaign", "grow", "snapchat", "lens", "sales"]):
+                    if len(text) > 20 and any(k in text.lower() for k in ["ad", "business", "audience", "campaign", "grow", "snapchat", "lens", "sales", "pixel"]):
                         updates.append({
                             "platform": "snapchat",
+                            "inferred_platform": "snapchat",
+                            "source_name": "Snapchat for Business",
                             "title": f"Snapchat for Business: {text[:100]}",
                             "original_url": "https://forbusiness.snapchat.com/blog",
                             "published_at": datetime.now(timezone.utc).isoformat(),
@@ -67,12 +78,14 @@ def scan_snap_developer_changelog() -> List[Dict[str, Any]]:
     if resp:
         try:
             soup = BeautifulSoup(resp.text, "html.parser")
-            headers = soup.find_all(["h2", "h3", "a"], limit=10)
+            headers = soup.find_all(["h2", "h3", "a"], limit=15)
             for h in headers:
                 text = h.get_text().strip()
-                if any(k in text.lower() for k in ["v1.", "v2.", "changelog", "release notes", "conversions api", "cpa", "pixel"]):
+                if any(k in text.lower() for k in ["v1.", "v2.", "changelog", "release notes", "conversions api", "cpa", "pixel", "capi"]):
                     updates.append({
                         "platform": "snapchat",
+                        "inferred_platform": "snapchat",
+                        "source_name": "Snapchat Marketing API",
                         "title": f"Snapchat Marketing API: {text[:100]}",
                         "original_url": url,
                         "published_at": datetime.now(timezone.utc).isoformat(),

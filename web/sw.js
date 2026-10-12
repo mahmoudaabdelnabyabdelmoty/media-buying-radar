@@ -1,4 +1,4 @@
-const CACHE_NAME = 'media-radar-v1.3';
+const CACHE_NAME = 'media-radar-v2.0';
 const STATIC_ASSETS = [
   './',
   './index.html',

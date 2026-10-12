@@ -18,18 +18,26 @@ logger = logging.getLogger("radar.scanners.linkedin")
 def scan_linkedin_marketing_blog() -> List[Dict[str, Any]]:
     """Scans LinkedIn Marketing Solutions Blog RSS."""
     updates = []
-    feed_url = "https://www.linkedin.com/business/marketing/blog/rss"
-    entries = fetch_rss_feed(feed_url)
-    for entry in entries[:8]:
-        updates.append({
-            "platform": "linkedin",
-            "title": f"LinkedIn Ads: {entry['title']}",
-            "original_url": entry["original_url"],
-            "published_at": entry["published_at"],
-            "category": "ميزات جديدة",
-            "raw_content": entry["raw_content"],
-            "is_outage": False,
-        })
+    feed_urls = [
+        "https://www.linkedin.com/business/marketing/blog/rss",
+        "https://www.linkedin.com/business/marketing/blog/rss.xml",
+    ]
+    for feed_url in feed_urls:
+        entries = fetch_rss_feed(feed_url)
+        for entry in entries[:8]:
+            updates.append({
+                "platform": "linkedin",
+                "inferred_platform": "linkedin",
+                "source_name": "LinkedIn Marketing Blog",
+                "title": f"LinkedIn Ads: {entry['title']}",
+                "original_url": entry["original_url"],
+                "published_at": entry["published_at"],
+                "category": "ميزات جديدة",
+                "raw_content": entry["raw_content"],
+                "is_outage": False,
+            })
+        if updates:
+            break
     return updates
 
 
@@ -44,11 +52,13 @@ def scan_linkedin_developer_changelog() -> List[Dict[str, Any]]:
             versions = soup.find_all(["h2", "h3"], limit=10)
             for v in versions:
                 text = v.get_text().strip()
-                if any(k in text.lower() for k in ["version", "202", "changelog", "breaking change"]):
+                if any(k in text.lower() for k in ["version", "202", "changelog", "breaking change", "api"]):
                     next_p = v.find_next(["p", "ul"])
                     desc = next_p.get_text().strip() if next_p else "LinkedIn Marketing API versioning update"
                     updates.append({
                         "platform": "linkedin",
+                        "inferred_platform": "linkedin",
+                        "source_name": "LinkedIn Developer Changelog",
                         "title": f"LinkedIn Marketing API: {text}",
                         "original_url": url,
                         "published_at": datetime.now(timezone.utc).isoformat(),

@@ -1,8 +1,9 @@
 """
 Meta Ads Scanner (Facebook & Instagram).
 Scans:
-- MetaStatus for service disruptions / outages
-- Meta Business Newsroom RSS
+- Jon Loomer Digital (Expert Meta Ads strategies, feature breakdowns, and algo changes)
+- MetaStatus API for active service disruptions / outages
+- Meta Business Newsroom RSS (about.fb.com)
 - Meta Developer Graph API / Marketing API Changelog
 """
 
@@ -36,6 +37,8 @@ def scan_metastatus() -> List[Dict[str, Any]]:
 
                 updates.append({
                     "platform": "meta",
+                    "inferred_platform": "meta",
+                    "source_name": "MetaStatus Dashboard",
                     "title": f"[عطل في السيستم] Meta Status: {name} ({status})",
                     "original_url": link,
                     "published_at": updated_at,
@@ -52,6 +55,8 @@ def scan_metastatus() -> List[Dict[str, Any]]:
                 if c_status != "operational" and any(k in c_name.lower() for k in ["ads", "graph api", "instagram", "marketing"]):
                     updates.append({
                         "platform": "meta",
+                        "inferred_platform": "meta",
+                        "source_name": "MetaStatus Dashboard",
                         "title": f"[خلل تقني] خلل في خدمة {c_name} بشركة ميتا",
                         "original_url": "https://metastatus.com",
                         "published_at": datetime.now(timezone.utc).isoformat(),
@@ -76,12 +81,13 @@ def scan_meta_business_news() -> List[Dict[str, Any]]:
         if entries:
             for entry in entries[:10]:
                 text = f"{entry['title']} {entry['raw_content']}".lower()
-                # Categorize based on business, AI, or advertising relevance
                 cat = "ميزات جديدة"
-                if any(k in text for k in ["ad", "business", "advertis", "monetiz", "partner", "commerce"]):
+                if any(k in text for k in ["ad", "business", "advertis", "monetiz", "partner", "commerce", "ai"]):
                     cat = "ميزات جديدة"
                 updates.append({
                     "platform": "meta",
+                    "inferred_platform": "meta",
+                    "source_name": "Meta Newsroom",
                     "title": f"Meta: {entry['title']}",
                     "original_url": entry["original_url"],
                     "published_at": entry["published_at"],
@@ -93,6 +99,26 @@ def scan_meta_business_news() -> List[Dict[str, Any]]:
     return updates
 
 
+def scan_jon_loomer_meta() -> List[Dict[str, Any]]:
+    """Scans Jon Loomer Digital dedicated to Meta Ads tactics and updates."""
+    updates = []
+    feed_url = "https://www.jonloomer.com/feed/"
+    entries = fetch_rss_feed(feed_url)
+    for entry in entries[:8]:
+        updates.append({
+            "platform": "meta",
+            "inferred_platform": "meta",
+            "source_name": "Jon Loomer Digital",
+            "title": f"Jon Loomer: {entry['title']}",
+            "original_url": entry["original_url"],
+            "published_at": entry["published_at"],
+            "category": "ميزات جديدة",
+            "raw_content": entry["raw_content"],
+            "is_outage": False,
+        })
+    return updates
+
+
 def scan_meta_developer_changelog() -> List[Dict[str, Any]]:
     """Scans Meta Graph API and Marketing API changelog."""
     updates = []
@@ -101,16 +127,16 @@ def scan_meta_developer_changelog() -> List[Dict[str, Any]]:
     if resp:
         try:
             soup = BeautifulSoup(resp.text, "html.parser")
-            # Look for version sections or headers
             sections = soup.find_all(["h2", "h3", "section"], limit=10)
             for sec in sections:
                 title_text = sec.get_text().strip()
                 if any(v in title_text.lower() for v in ["v2", "v1", "version", "marketing api", "changelog"]):
-                    # Grab sibling text
                     next_p = sec.find_next("p")
                     content = next_p.get_text().strip() if next_p else "تحديث في إصدارات Meta Marketing API"
                     updates.append({
                         "platform": "meta",
+                        "inferred_platform": "meta",
+                        "source_name": "Meta Developers",
                         "title": f"Meta Marketing API Changelog: {title_text}",
                         "original_url": url,
                         "published_at": datetime.now(timezone.utc).isoformat(),
@@ -130,6 +156,11 @@ def scan_meta() -> List[Dict[str, Any]]:
         all_updates.extend(scan_metastatus())
     except Exception as e:
         logger.error(f"Error in scan_metastatus: {e}")
+
+    try:
+        all_updates.extend(scan_jon_loomer_meta())
+    except Exception as e:
+        logger.error(f"Error in scan_jon_loomer_meta: {e}")
 
     try:
         all_updates.extend(scan_meta_business_news())

@@ -1,6 +1,7 @@
 """
 Database Engine for Media Buying Platform Updates Radar.
 Handles SQLite storage, SHA-256 deduplication, queries, and JSON export for the frontend dashboard.
+Supports inferred_platform and source_name for multi-source ingestion.
 """
 
 import json
@@ -41,10 +42,19 @@ def init_db(db_path: Optional[str] = None) -> None:
                     media_buyer_impact TEXT,
                     hash_sha256 TEXT UNIQUE NOT NULL,
                     is_outage INTEGER DEFAULT 0,
-                    created_at TEXT DEFAULT (datetime('now', 'utc'))
+                    created_at TEXT DEFAULT (datetime('now', 'utc')),
+                    inferred_platform TEXT,
+                    source_name TEXT
                 )
                 """
             )
+            # Backward-compatible migrations for existing databases
+            for col in ["inferred_platform TEXT", "source_name TEXT"]:
+                try:
+                    conn.execute(f"ALTER TABLE updates ADD COLUMN {col};")
+                except Exception:
+                    pass
+
             conn.execute(
                 "CREATE INDEX IF NOT EXISTS idx_updates_hash ON updates(hash_sha256);"
             )
@@ -101,6 +111,8 @@ def save_update(update_data: Dict[str, Any], db_path: Optional[str] = None) -> O
 
     created_at = update_data.get("created_at") or datetime.now(timezone.utc).isoformat()
     is_outage = 1 if update_data.get("is_outage") else 0
+    inferred_platform = update_data.get("inferred_platform") or platform
+    source_name = update_data.get("source_name") or ""
 
     conn = get_db_connection(db_path)
     try:
@@ -111,8 +123,8 @@ def save_update(update_data: Dict[str, Any], db_path: Optional[str] = None) -> O
                 INSERT INTO updates (
                     platform, title, original_url, published_at, category,
                     raw_content, egyptian_summary, media_buyer_impact,
-                    hash_sha256, is_outage, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    hash_sha256, is_outage, created_at, inferred_platform, source_name
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     platform,
@@ -126,6 +138,8 @@ def save_update(update_data: Dict[str, Any], db_path: Optional[str] = None) -> O
                     hash_sha256,
                     is_outage,
                     created_at,
+                    inferred_platform,
+                    source_name,
                 ),
             )
             return cursor.lastrowid
@@ -188,7 +202,7 @@ def get_stats(db_path: Optional[str] = None) -> Dict[str, Any]:
         conn.close()
 
 
-def export_to_json(filepath: Optional[str] = None, limit: int = 200, db_path: Optional[str] = None) -> str:
+def export_to_json(filepath: Optional[str] = None, limit: int = 250, db_path: Optional[str] = None) -> str:
     """
     Exports recent updates cleanly to JSON format to be read directly
     by the web dashboard (`web/data/updates.json`).
@@ -210,6 +224,7 @@ def export_to_json(filepath: Optional[str] = None, limit: int = 200, db_path: Op
         "x": "X Ads",
         "x_ads": "X Ads",
         "community": "مجتمعات المسوقين",
+        "industry_media": "صحافة وإعلام الميديا بايينج",
     }
 
     category_slug_map = {
@@ -225,6 +240,7 @@ def export_to_json(filepath: Optional[str] = None, limit: int = 200, db_path: Op
         "تتبع وبيكسل": ("algorithm", "🎯 تتبع وبيكسل"),
         "مزادات وCPM": ("algorithm", "💰 مزادات وCPM"),
         "استهداف وجمهور": ("feature", "👥 استهداف وجمهور"),
+        "مجتمع وميدان": ("feature", "💬 تقارير الميدان"),
     }
 
     enriched_updates = []
@@ -249,7 +265,8 @@ def export_to_json(filepath: Optional[str] = None, limit: int = 200, db_path: Op
         row["summary_egyptian"] = row.get("egyptian_summary", "")
         row["buyer_impact"] = row.get("media_buyer_impact", "")
         row["source_url"] = row.get("original_url", "")
-        row["source_name"] = platform_display_map.get(plat, "المصدر الرسمي")
+        row["source_name"] = row.get("source_name") or platform_display_map.get(plat, "المصدر الرسمي")
+        row["inferred_platform"] = row.get("inferred_platform", clean_plat)
         row["timestamp"] = row.get("published_at") or row.get("created_at") or datetime.now(timezone.utc).isoformat()
         row["is_outage"] = is_out
         enriched_updates.append(row)
@@ -260,7 +277,7 @@ def export_to_json(filepath: Optional[str] = None, limit: int = 200, db_path: Op
             "total_updates": stats["total_updates"],
             "total_outages": stats["total_outages"],
             "platform_breakdown": stats["platforms"],
-            "engine_version": "1.0.0",
+            "engine_version": "2.0.0",
         },
         "updates": enriched_updates,
     }
@@ -269,4 +286,3 @@ def export_to_json(filepath: Optional[str] = None, limit: int = 200, db_path: Op
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
     return str(target_path)
-

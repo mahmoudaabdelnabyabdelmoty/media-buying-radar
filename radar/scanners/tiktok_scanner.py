@@ -1,7 +1,7 @@
 """
 TikTok Ads Scanner.
 Scans:
-- TikTok Newsroom RSS Feed
+- TikTok Newsroom RSS Feed & Business Newsroom
 - TikTok Marketing API Changelog & Business Updates
 """
 
@@ -18,20 +18,28 @@ logger = logging.getLogger("radar.scanners.tiktok")
 def scan_tiktok_newsroom() -> List[Dict[str, Any]]:
     """Scans TikTok official Newsroom via RSS and HTML scraping."""
     updates = []
-    feed_url = "https://newsroom.tiktok.com/en-us/feed"
-    entries = fetch_rss_feed(feed_url)
-    for entry in entries[:8]:
-        text = f"{entry['title']} {entry['raw_content']}".lower()
-        if any(k in text for k in ["ad", "business", "creator", "partner", "commercial", "shopping", "brand", "feature", "campaign"]):
-            updates.append({
-                "platform": "tiktok",
-                "title": f"TikTok: {entry['title']}",
-                "original_url": entry["original_url"],
-                "published_at": entry["published_at"],
-                "category": "ميزات جديدة",
-                "raw_content": entry["raw_content"],
-                "is_outage": False,
-            })
+    feed_urls = [
+        "https://newsroom.tiktok.com/en-us/feed",
+        "https://newsroom.tiktok.com/feed",
+    ]
+    for feed_url in feed_urls:
+        entries = fetch_rss_feed(feed_url)
+        for entry in entries[:10]:
+            text = f"{entry['title']} {entry['raw_content']}".lower()
+            if any(k in text for k in ["ad", "business", "creator", "partner", "commercial", "shopping", "brand", "feature", "campaign", "pulse"]):
+                updates.append({
+                    "platform": "tiktok",
+                    "inferred_platform": "tiktok",
+                    "source_name": "TikTok Newsroom",
+                    "title": f"TikTok: {entry['title']}",
+                    "original_url": entry["original_url"],
+                    "published_at": entry["published_at"],
+                    "category": "ميزات جديدة",
+                    "raw_content": entry["raw_content"],
+                    "is_outage": False,
+                })
+        if updates:
+            break
 
     # If RSS returned no business items, scrape newsroom HTML
     if not updates:
@@ -39,13 +47,15 @@ def scan_tiktok_newsroom() -> List[Dict[str, Any]]:
         if resp:
             try:
                 soup = BeautifulSoup(resp.text, "html.parser")
-                for a in soup.find_all("a", limit=25):
+                for a in soup.find_all("a", limit=30):
                     href = a.get("href", "")
                     title = a.get_text().strip()
-                    if title and len(title) > 25 and not title.startswith("Watch"):
+                    if title and len(title) > 20 and not title.startswith("Watch"):
                         full_url = href if href.startswith("http") else f"https://newsroom.tiktok.com{href}"
                         updates.append({
                             "platform": "tiktok",
+                            "inferred_platform": "tiktok",
+                            "source_name": "TikTok Newsroom",
                             "title": f"TikTok Newsroom: {title}",
                             "original_url": full_url,
                             "published_at": datetime.now(timezone.utc).isoformat(),
@@ -68,12 +78,14 @@ def scan_tiktok_marketing_api() -> List[Dict[str, Any]]:
     if resp:
         try:
             soup = BeautifulSoup(resp.text, "html.parser")
-            elements = soup.find_all(["h2", "h3", "a"], limit=10)
+            elements = soup.find_all(["h2", "h3", "a"], limit=15)
             for el in elements:
                 text = el.get_text().strip()
-                if any(k in text.lower() for k in ["v1.", "v2.", "changelog", "update", "pixel", "catalog", "events api"]):
+                if any(k in text.lower() for k in ["v1.", "v2.", "changelog", "update", "pixel", "catalog", "events api", "lead gen"]):
                     updates.append({
                         "platform": "tiktok",
+                        "inferred_platform": "tiktok",
+                        "source_name": "TikTok Marketing API",
                         "title": f"TikTok Marketing API: {text[:100]}",
                         "original_url": url,
                         "published_at": datetime.now(timezone.utc).isoformat(),
