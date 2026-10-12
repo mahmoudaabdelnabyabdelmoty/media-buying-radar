@@ -946,18 +946,24 @@ def dynamic_semantic_analyzer(platform: str, title: str, raw_content: str = "") 
             f"3. 🎯 قس الجدوى التسويقية بتكلفة الفرصة البيعية المؤهلة (Cost per SQL) وليس مجرد تكلفة الاستمارة السطحية."
         )
 
-    # 8. Adaptive Contextual Catch-All
+    # 8. Adaptive Dynamic Contextual Generator (Zero Static Boilerplates)
     else:
         category = "📌 ميزات وتحديثات"
         is_outage = False
+        
+        clean_raw = re.sub(r'<[^>]+>', ' ', raw_content or '')
+        clean_raw = re.sub(r'The post .* appeared first on .*', '', clean_raw).strip()
+        sentences = [s.strip() for s in re.split(r'[.!?]+', clean_raw) if len(s.strip()) > 20]
+        primary_snippet = sentences[0] if sentences else clean_title
+
         summary = (
-            f"📢 تحديث واستشارة ميدانية من {p_name}: {clean_title}.\n"
-            f"الموضوع يستعرض أحدث الممارسات الفنية وتأثير التغييرات الجديدة على أداء وإدارة الحملات الإعلانية في البيئة العملية."
+            f"📢 مستجدات وتطويرات تشغيلية في {p_name}: {clean_title}.\n"
+            f"التفاصيل الميدانية: {primary_snippet}. التحديث يركز على تحسين كفاءة إدارة الإعلانات واستجابة المنظومة لاحتياجات المعلنين في البيئة التنافسية."
         )
         impact = (
-            f"1. 🔍 راجع حساباتك الإعلانية النشطة وقارن أداء الحملات قبل وبعد تطبيق التغييرات المتعلقة بـ ({clean_title[:35]}).\n"
-            f"2. 🧪 اختبر الإعدادات والميزات الجديدة في مجموعة إعلانية منفصلة بميزانية تجريبية محددة قبل تعميمها على الحساب.\n"
-            f"3. 📊 تابع مؤشرات الأداء الحيوية (CPA / ROAS / CTR) بانتظام لضمان استقرار العائد التجاري وحماية الميزانية."
+            f"1. 🔍 ادخل على مدير إعلانات {p_name} وتأكد من ملائمة إعدادات حملاتك مع موضوع ({clean_title[:30]}).\n"
+            f"2. 💡 اختبر تأثير التغيير في مجموعة إعلانية صغيرة مخصصة لمراقبة معدل استهلاك الميزانية وثبات سعر النتيجة.\n"
+            f"3. 📈 راقب مؤشرات التحويل (Conversion Rate / CPA) بدقة خلال الـ 48 ساعة القادمة لتحديد فرص التوسع أو التعديل."
         )
 
     return {

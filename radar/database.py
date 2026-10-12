@@ -80,13 +80,20 @@ def generate_content_hash(platform: str, title: str, original_url: str) -> str:
     return hashlib.sha256(normalized_raw.encode("utf-8")).hexdigest()
 
 
-def is_duplicate(hash_sha256: str, db_path: Optional[str] = None) -> bool:
-    """Checks whether an update with the given SHA-256 hash already exists in the database."""
+def is_duplicate(hash_sha256: str, original_url: Optional[str] = None, db_path: Optional[str] = None) -> bool:
+    """Checks whether an update with the given SHA-256 hash OR canonical URL already exists in the database."""
     conn = get_db_connection(db_path)
     try:
         cursor = conn.cursor()
         cursor.execute("SELECT 1 FROM updates WHERE hash_sha256 = ? LIMIT 1", (hash_sha256,))
-        return cursor.fetchone() is not None
+        if cursor.fetchone() is not None:
+            return True
+        if original_url:
+            norm_url = original_url.strip().rstrip('/')
+            cursor.execute("SELECT 1 FROM updates WHERE rtrim(original_url, '/') = ? LIMIT 1", (norm_url,))
+            if cursor.fetchone() is not None:
+                return True
+        return False
     finally:
         conn.close()
 
@@ -102,7 +109,7 @@ def save_update(update_data: Dict[str, Any], db_path: Optional[str] = None) -> O
 
     hash_sha256 = update_data.get("hash_sha256") or generate_content_hash(platform, title, original_url)
 
-    if is_duplicate(hash_sha256, db_path):
+    if is_duplicate(hash_sha256, original_url, db_path):
         return None
 
     published_at = update_data.get("published_at")
