@@ -73,11 +73,10 @@ PLATFORM_RULES = {
             "admob", "dv360", "display & video 360", "google ads api", "ga4",
             "google analytics", "troas", "smart bidding", "search console",
             "google search", "ad words", "google tags", "google tag manager",
-            "serp", "google ad", "seroundtable", "search engine journal",
-            "paid search", "google target bid", "seo pulse", "sitemap", "helpful content"
+            "google ad", "paid search", "google target bid"
         ],
         "secondary_keywords": [
-            "google", "search engine", "organic search"
+            "google", "helpful content"
         ],
         "patterns": [
             r"\bgoogle\s+ads?\b",
@@ -89,6 +88,21 @@ PLATFORM_RULES = {
             r"\bdemand\s+gen\b",
             r"\btroas\b",
             r"\bgoogle\s+shopping\b",
+        ],
+    },
+    "microsoft": {
+        "primary_keywords": [
+            "microsoft advertising", "bing ads", "bing", "microsoft", "bing places",
+            "microsoft ads", "copilot", "msft", "bing webmaster", "bing search"
+        ],
+        "secondary_keywords": [
+            "edge browser", "msn"
+        ],
+        "patterns": [
+            r"\bbing\b",
+            r"\bmicrosoft\b",
+            r"\bbing\s+ads?\b",
+            r"\bmicrosoft\s+advertising\b",
         ],
     },
     "snapchat": {
@@ -152,7 +166,7 @@ PLATFORM_RULES = {
     },
 }
 
-KNOWN_SPECIFIC_PLATFORMS = {"tiktok", "meta", "google_ads", "snapchat", "linkedin", "x_ads"}
+KNOWN_SPECIFIC_PLATFORMS = {"tiktok", "meta", "google_ads", "microsoft", "snapchat", "linkedin", "x_ads"}
 
 
 def calculate_platform_scores(

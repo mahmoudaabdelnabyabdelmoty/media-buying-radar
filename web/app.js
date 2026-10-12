@@ -322,6 +322,8 @@ function getPlatformIcon(platform) {
       return '<i class="fa-brands fa-linkedin"></i>';
     case 'x':
       return '<i class="fa-brands fa-x-twitter"></i>';
+    case 'microsoft':
+      return '<i class="fa-brands fa-microsoft"></i>';
     default:
       return '<i class="fa-solid fa-bullhorn"></i>';
   }
@@ -347,6 +349,7 @@ const PLATFORM_NAMES_AR = {
   snapchat: 'Snapchat Ads',
   linkedin: 'LinkedIn Ads',
   x: 'X Ads',
+  microsoft: 'Microsoft Ads',
   community: 'مجتمعات المسوقين'
 };
 
@@ -528,6 +531,7 @@ function normalizeUpdateItem(item, idx) {
   let plat = (item.platform || 'all').toLowerCase();
   if (plat === 'google_ads') plat = 'google';
   if (plat === 'x_ads') plat = 'x';
+  if (plat === 'microsoft_ads' || plat === 'bing') plat = 'microsoft';
 
   const ts = item.timestamp || item.published_at || item.created_at || new Date().toISOString();
   const relTime = item.relativeTime || computeArabicRelativeTime(ts);
@@ -655,7 +659,7 @@ function updateStatsAndBadges() {
   const countAll = document.getElementById('count-all');
   if (countAll) countAll.textContent = total;
 
-  ['meta', 'google', 'tiktok', 'snapchat', 'linkedin', 'x'].forEach(plat => {
+  ['meta', 'google', 'tiktok', 'snapchat', 'linkedin', 'x', 'microsoft', 'community'].forEach(plat => {
     const countEl = document.getElementById(`count-${plat}`);
     if (countEl) countEl.textContent = platformCounts[plat] || 0;
   });

@@ -577,6 +577,12 @@ body::before {
   border-color: var(--color-x);
   box-shadow: 0 0 15px var(--color-x-glow);
 }
+.tab-btn[data-platform="microsoft"].active {
+  background: rgba(0, 164, 239, 0.2);
+  border-color: #00a4ef;
+  color: #7dd3fc;
+  box-shadow: 0 0 15px rgba(0, 164, 239, 0.35);
+}
 .tab-btn[data-platform="community"].active {
   background: rgba(16, 185, 129, 0.2);
   border-color: #10b981;
@@ -825,6 +831,10 @@ body::before {
   --platform-accent: var(--color-x);
   --platform-glow: var(--color-x-glow);
 }
+.radar-card.platform-microsoft {
+  --platform-accent: #00a4ef;
+  --platform-glow: rgba(0, 164, 239, 0.35);
+}
 .radar-card.platform-community {
   --platform-accent: #10b981;
   --platform-glow: rgba(16, 185, 129, 0.3);
@@ -885,6 +895,11 @@ body::before {
   color: #e2e8f0;
   border-color: rgba(231, 233, 234, 0.3);
   background: rgba(231, 233, 234, 0.1);
+}
+.platform-microsoft .platform-badge {
+  color: #38bdf8;
+  border-color: rgba(0, 164, 239, 0.4);
+  background: rgba(0, 164, 239, 0.15);
 }
 .platform-community .platform-badge {
   color: #6ee7b7;
@@ -1013,7 +1028,9 @@ body::before {
   line-height: 1.68;
   font-weight: 500;
   white-space: pre-line;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  unicode-bidi: plaintext;
 }
 
 .box-summary-eg .box-text-content + .box-text-content {
@@ -1065,7 +1082,9 @@ body::before {
   line-height: 1.7;
   font-weight: 500;
   white-space: pre-line;
-  word-break: break-word;
+  overflow-wrap: break-word;
+  word-break: normal;
+  unicode-bidi: plaintext;
 }
 
 .box-buyer-impact .box-text-content + .box-text-content {

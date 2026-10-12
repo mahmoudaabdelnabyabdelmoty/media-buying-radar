@@ -230,6 +230,7 @@ def export_to_json(filepath: Optional[str] = None, limit: int = 250, db_path: Op
         "linkedin": "LinkedIn Ads",
         "x": "X Ads",
         "x_ads": "X Ads",
+        "microsoft": "Microsoft Ads",
         "community": "مجتمعات المسوقين",
         "industry_media": "صحافة وإعلام الميديا بايينج",
     }
