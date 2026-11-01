@@ -948,33 +948,27 @@ function startRelativeTimeTicker() {
 
 /**
  * Calculates the next scheduled cloud scan time.
- * Daily Cron Schedule: 12:00 PM and 8:00 PM Egypt Time (09:00 & 18:00 UTC).
+ * Daily Cron Schedule: Once daily at 8:00 PM Egypt Time (18:00 UTC).
  */
 function getNextScanSchedule() {
   const now = new Date();
   const nowMs = now.getTime();
 
-  // Scheduled UTC scan targets: 09:00 UTC and 18:00 UTC
-  const scan1Today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 9, 0, 0, 0));
-  const scan2Today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 18, 0, 0, 0));
-  const scan1Tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 9, 0, 0, 0));
+  // Scheduled UTC scan target: 18:00 UTC (8:00 PM Egypt Time)
+  const scanToday = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 18, 0, 0, 0));
+  const scanTomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 18, 0, 0, 0));
 
   // Active scan execution window: 5 minutes after trigger
   const SCAN_ACTIVE_WINDOW_MS = 5 * 60 * 1000;
 
-  if (nowMs >= scan1Today.getTime() && nowMs < scan1Today.getTime() + SCAN_ACTIVE_WINDOW_MS) {
-    return { targetDate: scan1Today, label: '(12:00 م)', isScanning: true };
-  }
-  if (nowMs >= scan2Today.getTime() && nowMs < scan2Today.getTime() + SCAN_ACTIVE_WINDOW_MS) {
-    return { targetDate: scan2Today, label: '(8:00 م)', isScanning: true };
+  if (nowMs >= scanToday.getTime() && nowMs < scanToday.getTime() + SCAN_ACTIVE_WINDOW_MS) {
+    return { targetDate: scanToday, label: '(8:00 م)', isScanning: true };
   }
 
-  if (nowMs < scan1Today.getTime()) {
-    return { targetDate: scan1Today, label: '(12:00 م)', isScanning: false };
-  } else if (nowMs < scan2Today.getTime()) {
-    return { targetDate: scan2Today, label: '(8:00 م)', isScanning: false };
+  if (nowMs < scanToday.getTime()) {
+    return { targetDate: scanToday, label: '(8:00 م)', isScanning: false };
   } else {
-    return { targetDate: scan1Tomorrow, label: '(12:00 م)', isScanning: false };
+    return { targetDate: scanTomorrow, label: '(8:00 م)', isScanning: false };
   }
 }
 
