@@ -2,8 +2,8 @@ name: Media Buying Radar Engine
 
 on:
   schedule:
-    # تشغيل مرتين يومياً (12 ظهراً و 8 مساءً بتوقيت مصر / 09:00 و 18:00 UTC)
-    - cron: '0 9,18 * * *'
+    # تشغيل مرة واحدة يومياً (8 مساءً بتوقيت مصر / 18:00 UTC)
+    - cron: '0 18 * * *'
   workflow_dispatch:
 
 permissions:
