@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generated_at": "2026-11-21T22:50:09.809814+00:00",
-    "total_updates": 1547,
+    "generated_at": "2026-11-22T23:18:31.291971+00:00",
+    "total_updates": 1548,
     "total_outages": 164,
     "platform_breakdown": {
       "community": 380,
-      "google_ads": 382,
+      "google_ads": 383,
       "linkedin": 56,
       "meta": 614,
       "microsoft": 37,
@@ -16,6 +16,29 @@
     "engine_version": "2.0.0"
   },
   "updates": [
+    {
+      "id": 1569,
+      "platform": "google",
+      "title": "SERoundtable: Google Search Profiles Is Rolling Out Globally",
+      "original_url": "https://www.seroundtable.com/google-search-profiles-global-42591.html",
+      "published_at": "2026-11-22T23:18:13.888921+00:00",
+      "category": "feature",
+      "raw_content": "Google Search Profiles Is Rolling Out Globally. Google seems to have rolled out Search Profiles globally, this has not yet been announced but now folks outside of the United States, Canada and India can now claim their profile without having to go through VPNs to pretend they are in those countries.",
+      "egyptian_summary": "📢 مستجدات وتفاصيل مهنية من Google Ads: SERoundtable: Google Search Profiles Is Rolling Out Globally.\nأبرز ما ورد في التفاصيل: Google Search Profiles Is Rolling Out Globally. Google seems to have rolled out Search Profiles globally, this has not yet been announced but now folks outside of the United States, Canada and India can now claim their profile without having to go through VPNs to pretend they are in those countries.",
+      "media_buyer_impact": "1. 🔍 راجع بنية حملاتك ذات الصلة وتأكد من ملائمة استراتيجية الاستهداف والمحتوى مع هذه التطورات.\n2. 💡 اختبر أي تنسيقات أو أدوات جديدة في مجموعة إعلانية تجريبية بميزانية معتدلة لقياس العائد العملي.\n3. 📈 تابع مؤشرات التحويل وتكلفة الاستحواذ على مدار 48 ساعة للتأكد من ثبات النتائج قبل التوسع.",
+      "hash_sha256": "54e626ed00e02cafa96652c269df5dec02a7e66ffb151950b9a2016bf756e426",
+      "is_outage": false,
+      "created_at": "2026-11-22T23:18:15.111244+00:00",
+      "inferred_platform": "google_ads",
+      "source_name": "Search Engine Roundtable",
+      "raw_platform": "google_ads",
+      "platformName": "Google Ads",
+      "categoryLabel": "📌 ميزات وتحديثات",
+      "summary_egyptian": "📢 مستجدات وتفاصيل مهنية من Google Ads: SERoundtable: Google Search Profiles Is Rolling Out Globally.\nأبرز ما ورد في التفاصيل: Google Search Profiles Is Rolling Out Globally. Google seems to have rolled out Search Profiles globally, this has not yet been announced but now folks outside of the United States, Canada and India can now claim their profile without having to go through VPNs to pretend they are in those countries.",
+      "buyer_impact": "1. 🔍 راجع بنية حملاتك ذات الصلة وتأكد من ملائمة استراتيجية الاستهداف والمحتوى مع هذه التطورات.\n2. 💡 اختبر أي تنسيقات أو أدوات جديدة في مجموعة إعلانية تجريبية بميزانية معتدلة لقياس العائد العملي.\n3. 📈 تابع مؤشرات التحويل وتكلفة الاستحواذ على مدار 48 ساعة للتأكد من ثبات النتائج قبل التوسع.",
+      "source_url": "https://www.seroundtable.com/google-search-profiles-global-42591.html",
+      "timestamp": "2026-11-22T23:18:13.888921+00:00"
+    },
     {
       "id": 1568,
       "platform": "community",
@@ -5741,29 +5764,6 @@
       "summary_egyptian": "📢 مستجدات وتفاصيل مهنية من مجتمع الميديا بايرز والـ PPC: Modern Retail: Hims & Hers expands benefits program for GLP-1 support with brands like Grüns and Tonal.\nأبرز ما ورد في التفاصيل: Last week, Hims & Hers announced an expansion of its Hims & Hers Benefits program by adding four new brand partners. First unveiled in March, the Benefits program offers Hims & Hers subscribers exclusive savings on products and services that support their health, including strength training and nutrition-focused programs throughout their GLP-1 weight loss journey.",
       "buyer_impact": "1. 🔍 راجع بنية حملاتك ذات الصلة وتأكد من ملائمة استراتيجية الاستهداف والمحتوى مع هذه التطورات.\n2. 💡 اختبر أي تنسيقات أو أدوات جديدة في مجموعة إعلانية تجريبية بميزانية معتدلة لقياس العائد العملي.\n3. 📈 تابع مؤشرات التحويل وتكلفة الاستحواذ على مدار 48 ساعة للتأكد من ثبات النتائج قبل التوسع.",
       "source_url": "https://www.modernretail.co/operations/hims-hers-benefits-program-gruns-tonal-viome-medjet/?utm_campaign=modernretaildis&utm_medium=rss&utm_source=general-rss",
-      "timestamp": "2026-11-12T05:00:00+00:00"
-    },
-    {
-      "id": 1346,
-      "platform": "meta",
-      "title": "Modern Retail: Modern Retail+ Research 2026 Creator Marketing Index: A brand guide to effective social media campaigns",
-      "original_url": "https://www.modernretail.co/marketing/modern-retail-research-2026-creator-marketing-index-a-brand-guide-to-effective-social-media-campaigns/?utm_campaign=modernretaildis&utm_medium=rss&utm_source=general-rss",
-      "published_at": "2026-11-12T05:00:00+00:00",
-      "category": "feature",
-      "raw_content": "01 Introduction As creator marketing becomes a fixture in many brands’ marketing strategies, creators’ roles are shifting and expanding. Brands may pay creators to produce sponsored content, gift products to them in the hope of organic posts, or rely on a combination of creator- and brand-produced content published on their own social media accounts. Overall, social media remains the leading channel for creator partnerships: 96% of respondents to Modern Retail’s first-quarter survey of brands and agencies said they partner with creators to create social media content. Within social media, Instagram (90%), Facebook (80%), YouTube (72%) and TikTok (63%) were the platforms marketers said they used most. This is a member-exclusive article from Modern Retail. Continue reading it on modernretail.co and subscribe to continue reading content like this.",
-      "egyptian_summary": "📢 مستجدات وتفاصيل مهنية من Meta Ads (فيسبوك وإنستجرام): Modern Retail: Modern Retail+ Research 2026 Creator Marketing Index: A brand guide to effective social media campaigns.\nأبرز ما ورد في التفاصيل: 01 Introduction As creator marketing becomes a fixture in many brands’ marketing strategies, creators’ roles are shifting and expanding. Brands may pay creators to produce sponsored content, gift products to them in the hope of organic posts, or rely on a combination of creator- and brand-produced content published on their own social media accounts.",
-      "media_buyer_impact": "1. 🔍 راجع بنية حملاتك ذات الصلة وتأكد من ملائمة استراتيجية الاستهداف والمحتوى مع هذه التطورات.\n2. 💡 اختبر أي تنسيقات أو أدوات جديدة في مجموعة إعلانية تجريبية بميزانية معتدلة لقياس العائد العملي.\n3. 📈 تابع مؤشرات التحويل وتكلفة الاستحواذ على مدار 48 ساعة للتأكد من ثبات النتائج قبل التوسع.",
-      "hash_sha256": "662a56756254d4677f657fcdad24757ad05a8feab4278e8582b73683577e890f",
-      "is_outage": false,
-      "created_at": "2026-11-12T23:15:44.124342+00:00",
-      "inferred_platform": "meta",
-      "source_name": "Modern Retail",
-      "raw_platform": "meta",
-      "platformName": "Meta Ads",
-      "categoryLabel": "📌 ميزات وتحديثات",
-      "summary_egyptian": "📢 مستجدات وتفاصيل مهنية من Meta Ads (فيسبوك وإنستجرام): Modern Retail: Modern Retail+ Research 2026 Creator Marketing Index: A brand guide to effective social media campaigns.\nأبرز ما ورد في التفاصيل: 01 Introduction As creator marketing becomes a fixture in many brands’ marketing strategies, creators’ roles are shifting and expanding. Brands may pay creators to produce sponsored content, gift products to them in the hope of organic posts, or rely on a combination of creator- and brand-produced content published on their own social media accounts.",
-      "buyer_impact": "1. 🔍 راجع بنية حملاتك ذات الصلة وتأكد من ملائمة استراتيجية الاستهداف والمحتوى مع هذه التطورات.\n2. 💡 اختبر أي تنسيقات أو أدوات جديدة في مجموعة إعلانية تجريبية بميزانية معتدلة لقياس العائد العملي.\n3. 📈 تابع مؤشرات التحويل وتكلفة الاستحواذ على مدار 48 ساعة للتأكد من ثبات النتائج قبل التوسع.",
-      "source_url": "https://www.modernretail.co/marketing/modern-retail-research-2026-creator-marketing-index-a-brand-guide-to-effective-social-media-campaigns/?utm_campaign=modernretaildis&utm_medium=rss&utm_source=general-rss",
       "timestamp": "2026-11-12T05:00:00+00:00"
     }
   ]
